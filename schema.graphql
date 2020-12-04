@@ -1,0 +1,91 @@
+type Token @entity {
+  "ERC20 Token"
+  id: ID!
+
+  "Blockchain address of the ERC20"
+  address: Bytes
+
+  "Name of the token"
+  name: String!
+
+  "Symbol of the token"
+  name: String!
+
+}
+
+type Volume @entity {
+  "The trade volume of a certain token."
+  id: ID!
+
+  "Token"
+  token: Token!
+
+  "Token volume traded."
+  tradevolume: BigInt!
+
+}
+
+type Deposit @entity {
+  "Deposits to Idex"
+  id: ID!
+  "Deposited tokens"
+  token:Bytes!
+  "Amount"
+  amount:BigInt!
+  "Owner"
+  trader:Trader!
+  "Deposit timestamp"
+  timestamp:BigInt!
+}
+
+type Withdraw @entity {
+  "Withdrawals to Idex"
+  id: ID!
+  "Withdrawn tokens"
+  token:Bytes!
+  "Amount"
+  amount:BigInt!
+  "Owner"
+  trader:Trader!
+  "Withdraw timestamp"
+  timestamp:BigInt!
+}
+
+type Balance @entity {
+  "Traders token balances"
+  id: ID!
+  token: Bytes!
+  amount: BigInt!
+  trader:Trader!
+
+}
+
+type Trade @entity {
+  "Executed trade"
+  id: ID!
+  "Base token"
+  basetoken:Bytes!
+  "Quote token"
+  quotetoken:Bytes!
+  "Base token Quantity"
+  basetokenquantity:BigInt!
+  "Quote token Quantity"
+  quotetokenquantity:BigInt!
+  "Owner"
+  trader:Trader!
+  "Trade timestamp"
+  timestamp:BigInt!
+}
+
+type Trader @entity {
+  "Trader"
+  id: ID!
+  "Traders trades"
+  trades: [Trade!]! @derivedFrom(field: "trader")
+  "Traders deposits"
+  deposits: [Deposit!]! @derivedFrom(field: "trader")
+  "Traders withdraws"
+  withdraws: [Withdraw!]! @derivedFrom(field: "trader")
+  "Traders balances"
+  balances: [Balance!]! @derivedFrom(field: "trader")
+}

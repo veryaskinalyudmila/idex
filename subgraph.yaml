@@ -1,0 +1,59 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Contract
+    network: mainnet
+    source:
+      address: "0xA36972E347E538E6C7Afb9f44FB10DDa7BBa9BA2"
+      abi: Contract
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - ChainPropagationPeriodChanged
+        - Deposited
+        - DispatcherChanged
+        - FeeWalletChanged
+        - OrderNonceInvalidated
+        - TokenRegistered
+        - TokenRegistrationConfirmed
+        - TokenSymbolAdded
+        - TradeExecuted
+        - WalletExitCleared
+        - WalletExitWithdrawn
+        - WalletExited
+        - Withdrawn
+      abis:
+        - name: Contract
+          file: ./abis/Contract.json
+      eventHandlers:
+        - event: ChainPropagationPeriodChanged(uint256,uint256)
+          handler: handleChainPropagationPeriodChanged
+        - event: Deposited(uint64,indexed address,indexed address,indexed string,string,uint64,uint64,uint256)
+          handler: handleDeposited
+        - event: DispatcherChanged(address,address)
+          handler: handleDispatcherChanged
+        - event: FeeWalletChanged(address,address)
+          handler: handleFeeWalletChanged
+        - event: OrderNonceInvalidated(indexed address,uint128,uint128,uint256)
+          handler: handleOrderNonceInvalidated
+        - event: TokenRegistered(indexed address,string,uint8)
+          handler: handleTokenRegistered
+        - event: TokenRegistrationConfirmed(indexed address,string,uint8)
+          handler: handleTokenRegistrationConfirmed
+        - event: TokenSymbolAdded(indexed address,string)
+          handler: handleTokenSymbolAdded
+        - event: TradeExecuted(address,address,indexed string,indexed string,string,string,uint64,uint64,uint64,bytes32,bytes32)
+          handler: handleTradeExecuted
+        - event: WalletExitCleared(indexed address)
+          handler: handleWalletExitCleared
+        - event: WalletExitWithdrawn(indexed address,indexed address,string,uint64,uint64,uint256)
+          handler: handleWalletExitWithdrawn
+        - event: WalletExited(indexed address,uint256)
+          handler: handleWalletExited
+        - event: Withdrawn(indexed address,indexed address,string,uint64,uint64,uint256)
+          handler: handleWithdrawn
+      file: ./src/mapping.ts
